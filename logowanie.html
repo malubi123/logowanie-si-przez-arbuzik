@@ -1,0 +1,21 @@
+<button onclick="openArbuzikLogin()">Zaloguj się przez Arbuzik</button>
+
+<script>
+    function openArbuzikLogin() {
+        const arbuzikWindow = window.open('https://malubi123.github.io/rejestrarbuzik/', 'arbuzikWindow', 'width=600,height=400');
+
+        window.addEventListener('message', function(event) {
+            // Sprawdź, czy wiadomość pochodzi z Twojej strony
+            if (event.origin === 'https://malubi123.github.io/rejestrarbuzik/') {
+                if (event.data.valid) {
+                    alert('Logowanie udane!');
+                } else {
+                    alert('Błędne dane logowania!');
+                }
+            }
+        });
+
+        // Wysyłanie danych logowania do strony rejestru
+        arbuzikWindow.postMessage({ username: 'test_user', password: 'test_pass' }, 'https://twoja-nazwa-uzytkownika.github.io');
+    }
+</script>
