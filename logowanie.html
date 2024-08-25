@@ -1,21 +1,43 @@
-<button onclick="openArbuzikLogin()">Zaloguj się przez Arbuzik</button>
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strona Logowania</title>
+    <style>
+        #arbuzikIframe {
+            width: 600px;
+            height: 400px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <button onclick="openArbuzikLogin()">Zaloguj się przez Arbuzik</button>
 
-<script>
-    function openArbuzikLogin() {
-        const arbuzikWindow = window.open('https://malubi123.github.io/rejestrarbuzik/', 'arbuzikWindow', 'width=600,height=400');
+    <iframe id="arbuzikIframe" src="about:blank"></iframe>
 
-        window.addEventListener('message', function(event) {
-            // Sprawdź, czy wiadomość pochodzi z Twojej strony
-            if (event.origin === 'https://malubi123.github.io/rejestrarbuzik/') {
-                if (event.data.valid) {
-                    alert('Logowanie udane!');
-                } else {
-                    alert('Błędne dane logowania!');
+    <script>
+        function openArbuzikLogin() {
+            const iframe = document.getElementById('arbuzikIframe');
+            iframe.src = 'https://malubi123.github.io/rejestrarbuzik/';
+            
+            window.addEventListener('message', function(event) {
+                // Sprawdź, czy wiadomość pochodzi z Twojej strony
+                if (event.origin === 'https://malubi123.github.io/rejestrarbuzik/') {
+                    if (event.data.valid) {
+                        alert('Logowanie udane!');
+                    } else {
+                        alert('Błędne dane logowania!');
+                    }
                 }
-            }
-        });
+            });
 
-        // Wysyłanie danych logowania do strony rejestru
-        arbuzikWindow.postMessage({ username: 'test_user', password: 'test_pass' }, 'https://twoja-nazwa-uzytkownika.github.io');
-    }
-</script>
+            // Wysyłanie danych logowania do strony rejestru w iframe
+            iframe.onload = function() {
+                iframe.contentWindow.postMessage({ username: 'test_user', password: 'test_pass' }, 'https://twoja-nazwa-uzytkownika.github.io/nazwa-repozytorium');
+            };
+        }
+    </script>
+</body>
+</html>
